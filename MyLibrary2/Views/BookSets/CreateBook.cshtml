@@ -1,0 +1,99 @@
+﻿@model MyLibrary2.Models.Book
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create book of set</h1>
+
+<h4>Book</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Height" class="control-label"></label>
+                <input asp-for="Height" class="form-control" />
+                <span asp-validation-for="Height" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Width" class="control-label"></label>
+                <input asp-for="Width" class="form-control" />
+                <span asp-validation-for="Width" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="LibraryId" class="control-label">Genre</label>
+                <select id="LibraryId" name="LibraryId" class="form-control" asp-items="ViewBag.Libraries">
+                    <option disabled selected>Select Genre</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="ShelfId" class="control-label"></label>
+                <select id="sehlvesSelect" asp-for="ShelfId" class="form-control" asp-items="ViewBag.ShelfId">
+                    <option disabled selected>Select Shelf</option>
+                </select>
+                <span asp-validation-for="ShelfId" class="text-danger"></span>
+            </div>
+            <input type="hidden" id="isConfirmed" name="isConfirmed" value="false" />
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        document.getElementById('LibraryId').addEventListener('change', function () {
+            var selectedLibraryId = this.value;
+            console.log("Library selected: " + selectedLibraryId);
+
+            var height = document.querySelector('input[name="Height"]').value;
+            var width = document.querySelector('input[name="Width"]').value;
+            console.log("Height: " + height + ", Width: " + width);
+
+            // בצע קריאת AJAX לפונקציה בקונטרולר עם הערכים הנוספים
+            fetch(`/Books/GetShelfs?libraryId=${selectedLibraryId}&height=${height}&width=${width}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Library details:", data);
+                    var shelvesSelect = document.getElementById("sehlvesSelect");
+                    const options = data.map(({ value, text }) => `<option value="${value}">${text}</option>`).join('');
+                    shelvesSelect.innerHTML = options;
+                })
+                .catch(error => console.error('Error:', error));
+        });
+
+        function confirmMessage() {
+            var message = '@ViewBag.Message';
+            if (message) {
+                let text = "The height of the shelf is large in relation to the book,\n are you still interested in continuing?";
+                if (confirm(text) == true) {
+                    document.getElementById('isConfirmed').value = true;
+                    return true;
+                    console.log("good");// מאפשר את שליחת הטופס
+                } else {
+                    return false; // מונע את שליחת הטופס
+                    console.log("eror");
+                }
+            }
+            return true
+            console.log("good");
+        }
+    </script>
+}
+
