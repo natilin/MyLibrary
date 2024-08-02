@@ -85,12 +85,12 @@ namespace MyLibrary2.Controllers
         {
             if (ModelState.IsValid)
             {
-                var selectedShelf = await _context.Shelf.FirstOrDefaultAsync(s => s.Id == book.ShelfId);
-                if(selectedShelf.Height- book.Height >= 10 && !isConfirmed)
-                {
-                    ViewData["Message"] = true; 
-                    return View();
-                }
+                //var selectedShelf = await _context.Shelf.FirstOrDefaultAsync(s => s.Id == book.ShelfId);
+                //if(selectedShelf.Height- book.Height >= 10 && !isConfirmed)
+                //{
+                //    ViewData["Message"] = true; 
+                //    return View();
+                //}
                 _context.Add(book);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

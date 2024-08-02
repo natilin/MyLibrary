@@ -78,22 +78,20 @@
                 .catch(error => console.error('Error:', error));
         });
 
-        function confirmMessage() 
-        {
-            var message = '@ViewBag.Message';
-            if (message) {
-                let text = "The height of the shelf is large in relation to the book,\n are you still interested in continuing?";
-                if (confirm(text) == true) {
-                    document.getElementById('isConfirmed').value = true;
-                    return true;
-                    console.log("good");// מאפשר את שליחת הטופס
-                } else {
-                    return false; // מונע את שליחת הטופס
-                    console.log("eror");
-                }
-            }
-            return true
-            console.log("good");
-        }
+        // function confirmMessage() 
+        // {
+        //     var message = '@ViewBag.Message';
+        //     if (message) {
+        //         let text = "The height of the shelf is large in relation to the book,\n are you still interested in continuing?";
+        //         if (confirm(text) == true) {
+        //             document.getElementById('isConfirmed').value = true;
+        //             return true;
+        //         } else {
+        //             return false; // מונע את שליחת הטופס
+        //         }
+        //     }
+        //     return true
+        //     console.log("good");
+        // }
     </script>
 }

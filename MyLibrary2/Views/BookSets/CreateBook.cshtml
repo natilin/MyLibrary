@@ -1,4 +1,4 @@
-﻿@model MyLibrary2.Models.Book
+﻿@model MyLibrary2.ViewModels.CreateSetViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -13,19 +13,19 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+                <label asp-for="book.Name" class="control-label"></label>
+                <input asp-for="book.Name" class="form-control" />
+                <span asp-validation-for="book.Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Height" class="control-label"></label>
-                <input asp-for="Height" class="form-control" />
-                <span asp-validation-for="Height" class="text-danger"></span>
+                <label asp-for="book.Height" class="control-label"></label>
+                <input asp-for="book.Height" class="form-control" />
+                <span asp-validation-for="book.Height" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Width" class="control-label"></label>
-                <input asp-for="Width" class="form-control" />
-                <span asp-validation-for="Width" class="text-danger"></span>
+                <label asp-for="book.Width" class="control-label"></label>
+                <input asp-for="book.Width" class="form-control" />
+                <span asp-validation-for="book.Width" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label for="LibraryId" class="control-label">Genre</label>
@@ -34,11 +34,11 @@
                 </select>
             </div>
             <div class="form-group">
-                <label asp-for="ShelfId" class="control-label"></label>
-                <select id="sehlvesSelect" asp-for="ShelfId" class="form-control" asp-items="ViewBag.ShelfId">
+                <label asp-for="book.ShelfId" class="control-label"></label>
+                <select id="sehlvesSelect" asp-for="book.ShelfId" class="form-control" asp-items="ViewBag.ShelfId">
                     <option disabled selected>Select Shelf</option>
                 </select>
-                <span asp-validation-for="ShelfId" class="text-danger"></span>
+                <span asp-validation-for="book.ShelfId" class="text-danger"></span>
             </div>
             <input type="hidden" id="isConfirmed" name="isConfirmed" value="false" />
             <div class="form-group">
@@ -66,8 +66,8 @@
             var width = document.querySelector('input[name="Width"]').value;
             console.log("Height: " + height + ", Width: " + width);
 
-            // בצע קריאת AJAX לפונקציה בקונטרולר עם הערכים הנוספים
-            fetch(`/Books/GetShelfs?libraryId=${selectedLibraryId}&height=${height}&width=${width}`)
+
+            fetch(`/BookSets/GetShelfs?libraryId=${selectedLibraryId}&height=${height}&width=${width}`)
                 .then(response => response.json())
                 .then(data => {
                     console.log("Library details:", data);
@@ -85,9 +85,9 @@
                 if (confirm(text) == true) {
                     document.getElementById('isConfirmed').value = true;
                     return true;
-                    console.log("good");// מאפשר את שליחת הטופס
+                    console.log("good");
                 } else {
-                    return false; // מונע את שליחת הטופס
+                    return false; 
                     console.log("eror");
                 }
             }

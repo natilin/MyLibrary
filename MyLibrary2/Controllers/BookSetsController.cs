@@ -46,6 +46,7 @@ namespace MyLibrary2.Controllers
         // GET: BookSets/Create
         public IActionResult Create()
         {
+            ViewBag.Libraries = new SelectList(_context.Library, "Id", "Name");
             return View();
         }
 
@@ -54,13 +55,13 @@ namespace MyLibrary2.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] BookSet bookSet)
+        public async Task<IActionResult> Create([Bind("Id,Name")] BookSet bookSet, int LibraryId)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(bookSet);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                //_context.Add(bookSet);
+                //await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(CreateBook));
             }
             return View(bookSet);
         }
@@ -153,5 +154,12 @@ namespace MyLibrary2.Controllers
         {
             return _context.BookSet.Any(e => e.Id == id);
         }
+
+        public  IActionResult CreateBook(BookSet bookSet)
+        {
+           return View(bookSet);
+        }
+
+      
     }
 }
