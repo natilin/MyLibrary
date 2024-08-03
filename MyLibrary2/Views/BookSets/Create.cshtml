@@ -1,4 +1,4 @@
-﻿@model MyLibrary2.ViewModels.CreateSetViewModel
+﻿@model MyLibrary2.Models.BookSet
 
 @{
     ViewData["Title"] = "Create";
@@ -10,12 +10,12 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create" method="post">
+        <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="bookSet.Name" class="control-label"></label>
-                <input asp-for="bookSet.Name" class="form-control" />
-                <span asp-validation-for="bookSet.Name" class="text-danger"></span>
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label for="LibraryId" class="control-label">Genre</label>
@@ -23,30 +23,18 @@
                     <option disabled selected>Select Genre</option>
                 </select>
             </div>
+            <div id="booksContainer"></div>
 
-            <h4>Books</h4>
-            <div id="booksContainer">
-                <div class="bookFields">
-                    <div class="form-group">
-                        <label asp-for="Books[0].Name" class="control-label">Book Name</label>
-                        <input asp-for="Books[0].Name" class="form-control" />
-                        <span asp-validation-for="Books[0].Name" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Books[0].Height" class="control-label">Height</label>
-                        <input asp-for="Books[0].Height" class="form-control" />
-                        <span asp-validation-for="Books[0].Height" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Books[0].Width" class="control-label">Width</label>
-                        <input asp-for="Books[0].Width" class="form-control" />
-                        <span asp-validation-for="Books[0].Width" class="text-danger"></span>
-                    </div>
-                </div>
+            <div class="form-group">
+                <button type="button" id="addBookButton" class="btn btn-secondary">Add Book</button>
+                <button type="button" id="selectShelfButton" class="btn btn-primary" style="display:none;">Select Shelf</button>
             </div>
-
-            <button type="button" id="addBookButton" class="btn btn-secondary">Add Book</button>
-
+            <div class="form-group">
+                <label for="shelfSelect" class="control-label">Select Shelf</label>
+                <select id="shelfSelect" name="ShelfId" class="form-control" style="display:none;">
+                    <option disabled selected>Select Shelf</option>
+                </select>
+            </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
@@ -57,12 +45,13 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
+<input id="TotalWidth" type="hidden" name="TotalWidth" class="form-control" readonly />
+<input id="MaxHeight" type="hidden" name="MaxHeight" class="form-control" />
 
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-
     <script>
         document.getElementById('addBookButton').addEventListener('click', function () {
             var container = document.getElementById('booksContainer');
@@ -76,14 +65,69 @@
                         </div>
                         <div class="form-group">
                             <label for="Books_${index}__Height" class="control-label">Height</label>
-                            <input name="Books[${index}].Height" class="form-control" />
+                            <input name="Books[${index}].Height" class="form-control book-height" />
                         </div>
                         <div class="form-group">
                             <label for="Books_${index}__Width" class="control-label">Width</label>
-                            <input name="Books[${index}].Width" class="form-control" />
+                            <input name="Books[${index}].Width" class="form-control book-width" />
                         </div>
                     `;
             container.appendChild(newFields);
+            updateTotalWidth();
+            updateMaxHeight();
+            document.getElementById('selectShelfButton').style.display = 'inline-block';
         });
+
+        document.getElementById('booksContainer').addEventListener('input', function (event) {
+            if (event.target.classList.contains('book-width')) {
+                updateTotalWidth();
+            }
+            if (event.target.classList.contains('book-height')) {
+                updateMaxHeight();
+            }
+        });
+
+        document.getElementById('selectShelfButton').addEventListener('click', function () {
+            var totalWidth = document.getElementById('TotalWidth').value;
+            var maxHeight = document.getElementById('MaxHeight').value;
+            var selectedLibraryId = document.getElementById('LibraryId').value;
+
+            fetch(`/BookSets/GetShelfs?libraryId=${selectedLibraryId}&height=${maxHeight}&totalWidth=${totalWidth}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Shelves details:", data);
+                    var shelvesSelect = document.getElementById("shelfSelect");
+                    const options = data.map(({ value, text }) => `<option value="${value}">${text}</option>`).join('');
+                    shelvesSelect.innerHTML = options;
+                    shelvesSelect.style.display = 'block'; // הצגת תיבת הבחירה
+                })
+                .catch(error => console.error('Error:', error));
+        });
+
+        function updateTotalWidth() {
+            var totalWidth = 0;
+            var widths = document.querySelectorAll('.book-width');
+            widths.forEach(function (input) {
+                var value = parseFloat(input.value);
+                if (!isNaN(value)) {
+                    totalWidth += value;
+                }
+            });
+            document.getElementById('TotalWidth').value = totalWidth;
+            console.log("TotalWidth: " + totalWidth)
+        }
+
+        function updateMaxHeight() {
+            var maxHeight = 0;
+            var heights = document.querySelectorAll('.book-height');
+            heights.forEach(function (input) {
+                var value = parseFloat(input.value);
+                if (!isNaN(value) && value > maxHeight) {
+                    maxHeight = value;
+                }
+            });
+            document.getElementById('MaxHeight').value = maxHeight;
+            console.log("MaxHeight: " + maxHeight)
+        }
     </script>
 }

@@ -62,8 +62,7 @@ namespace MyLibrary2.Controllers
             try
             {
                 List<Shelf> shelfs = _context.Shelf.Where(s => s.LibraryId == libraryId && s.Width > width && s.Height > height).ToList()
-                    .Where(s => s.EmptySpace > width).ToList();
-                                                                        //List<Shelf> shelfs = await _context.Shelf.Where(s => s.LibraryId == libraryId && s.Width > width && s.Height > height && s.EmptySpace > width).ToListAsync();
+                    .Where(s => s.EmptySpace > width).ToList();                                                                      
                 var shelfData = new SelectList(shelfs, "Id", "Id");
                 return Json(shelfData);
             }

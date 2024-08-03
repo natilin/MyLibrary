@@ -13,6 +13,7 @@ namespace MyLibrary2.Models
         public int ShelfId { get; set; }
         public Shelf? Shelf { get; set; }
         public int? BookSetId {  get; set; }
+        public BookSet? BookSet { get; set; }
 
     }
 }

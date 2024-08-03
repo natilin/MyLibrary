@@ -115,7 +115,7 @@ namespace MyLibrary2.Migrations
 
             modelBuilder.Entity("MyLibrary2.Models.Book", b =>
                 {
-                    b.HasOne("MyLibrary2.Models.BookSet", null)
+                    b.HasOne("MyLibrary2.Models.BookSet", "BookSet")
                         .WithMany("Books")
                         .HasForeignKey("BookSetId");
 
@@ -124,6 +124,8 @@ namespace MyLibrary2.Migrations
                         .HasForeignKey("ShelfId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("BookSet");
 
                     b.Navigation("Shelf");
                 });

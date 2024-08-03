@@ -50,20 +50,43 @@ namespace MyLibrary2.Controllers
             return View();
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetShelfs(int libraryId, int MaxHeight, int TotalWidth)
+        {
+            try
+            {
+                List<Shelf> shelfs = _context.Shelf.Where(s => s.LibraryId == libraryId && s.Width > TotalWidth && s.Height > MaxHeight).ToList()
+                    .Where(s => s.EmptySpace > TotalWidth).ToList();
+                var shelfData = new SelectList(shelfs, "Id", "Id");
+                return Json(shelfData);
+            }
+            catch (Exception e)
+            {
+
+                throw;
+            }
+
+
+        }
+
         // POST: BookSets/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] BookSet bookSet, int LibraryId)
+        public async Task<IActionResult> Create(BookSet bookSet, int ShelfId)
         {
             if (ModelState.IsValid)
             {
-                //_context.Add(bookSet);
-                //await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(CreateBook));
+                foreach (var book in bookSet.Books)
+                {
+                    book.BookSet = bookSet;
+                    book.ShelfId = ShelfId;
+                }
+                _context.Add(bookSet);
+                await _context.SaveChangesAsync();
             }
-            return View(bookSet);
+            return RedirectToAction(nameof(Index)); ;
         }
 
         // GET: BookSets/Edit/5
