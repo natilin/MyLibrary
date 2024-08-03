@@ -31,7 +31,7 @@
             </div>
             <div class="form-group">
                 <label for="shelfSelect" class="control-label">Select Shelf</label>
-                <select id="shelfSelect" name="ShelfId" class="form-control" style="display:none;">
+                <select id="shelfSelect"  name="ShelfId" class="form-control" style="display:none;">
                     <option disabled selected>Select Shelf</option>
                 </select>
             </div>
@@ -61,15 +61,15 @@
             newFields.innerHTML = `
                         <div class="form-group">
                             <label for="Books_${index}__Name" class="control-label">Book Name</label>
-                            <input name="Books[${index}].Name" class="form-control" />
+                                    <input name="Books[${index}].Name" class="form-control" />
                         </div>
                         <div class="form-group">
                             <label for="Books_${index}__Height" class="control-label">Height</label>
-                            <input name="Books[${index}].Height" class="form-control book-height" />
+                                            <input type="number" name="Books[${index}].Height" min="1" class="form-control book-height" />
                         </div>
                         <div class="form-group">
                             <label for="Books_${index}__Width" class="control-label">Width</label>
-                            <input name="Books[${index}].Width" class="form-control book-width" />
+                                                    <input type="number" name="Books[${index}].Width" min="1" class="form-control  book-width" />
                         </div>
                     `;
             container.appendChild(newFields);

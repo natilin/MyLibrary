@@ -22,7 +22,7 @@ namespace MyLibrary2.Controllers
         // GET: BookSets
         public async Task<IActionResult> Index()
         {
-            return View(await _context.BookSet.ToListAsync());
+            return View(await _context.BookSet.Include(b => b.Books).ToListAsync());
         }
 
         // GET: BookSets/Details/5
