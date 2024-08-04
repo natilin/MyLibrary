@@ -74,19 +74,29 @@ namespace MyLibrary2.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(BookSet bookSet, int ShelfId)
+        public async Task<IActionResult> Create(BookSet bookSet, int shelfId)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid & shelfId != 0 & bookSet.Books.Count >= 2)
             {
                 foreach (var book in bookSet.Books)
                 {
                     book.BookSet = bookSet;
-                    book.ShelfId = ShelfId;
+                    book.ShelfId = shelfId;
                 }
                 _context.Add(bookSet);
                 await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
             }
-            return RedirectToAction(nameof(Index)); ;
+            if(shelfId == 0)
+            {
+                ModelState.AddModelError("", "לא נבחר מדף");
+            }
+            if (bookSet.Books.Count < 2)
+            {
+                ModelState.AddModelError("", "יש להכניס לפחות 2 ספרים לסט!");
+            }
+            ViewBag.Libraries = new SelectList(_context.Library, "Id", "Name");
+            return View(bookSet); 
         }
 
         // GET: BookSets/Edit/5

@@ -1,10 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace MyLibrary2.Models
 {
+
+    [Index(nameof(Name), IsUnique = true)]
     public class Library
     {
-        //[Index(nameof(Name), IsUnique = true)]
+
 
             [Key]
             public int Id { get; set; }

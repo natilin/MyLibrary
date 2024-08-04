@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyLibrary2.Data;
 
@@ -11,9 +12,11 @@ using MyLibrary2.Data;
 namespace MyLibrary2.Migrations
 {
     [DbContext(typeof(MyLibrary2Context))]
-    partial class MyLibrary2ContextModelSnapshot : ModelSnapshot
+    [Migration("20240804070837_addUnique")]
+    partial class addUnique
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

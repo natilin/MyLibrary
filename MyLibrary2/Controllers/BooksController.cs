@@ -24,7 +24,8 @@ namespace MyLibrary2.Controllers
         // GET: Books
         public async Task<IActionResult> Index()
         {
-            var myLibrary2Context = _context.Book.Include(b => b.Shelf);
+            var myLibrary2Context = _context.Book.Include(b => b.Shelf)
+                .ThenInclude(s => s.Library);
             return View(await myLibrary2Context.ToListAsync());
         }
 
