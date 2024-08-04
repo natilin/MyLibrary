@@ -4,13 +4,13 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Books List</h1>
+<h1>רשימת ספרים</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">יצירת ספר חדש</a>
 </p>
 <p>
-    <a asp-controller ="BookSets" asp-action="Create">Create New set</a>
+    <a asp-controller ="BookSets" asp-action="Create">יצירת סט ספרים חדש</a>
 </p>
 <table class="table">
     <thead>
@@ -25,7 +25,10 @@
                 @Html.DisplayNameFor(model => model.Width)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Shelf)
+                @Html.DisplayNameFor(model => model.ShelfId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Shelf.Library.Name)
             </th>
             <th></th>
         </tr>
@@ -43,7 +46,10 @@
                 @Html.DisplayFor(modelItem => item.Width)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Shelf.Id)
+                @Html.DisplayFor(modelItem => item.ShelfId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Shelf.Library.Name)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

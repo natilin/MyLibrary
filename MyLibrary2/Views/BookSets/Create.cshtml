@@ -4,7 +4,7 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h1>יצירת סט ספרים חדש</h1>
 
 <h4>BookSet</h4>
 <hr />
@@ -18,7 +18,7 @@
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label for="LibraryId" class="control-label">Genre</label>
+                <label for="LibraryId" class="control-label">ז'אנר</label>
                 <select id="LibraryId" name="LibraryId" class="form-control" asp-items="ViewBag.Libraries">
                     <option disabled selected>Select Genre</option>
                 </select>
@@ -43,7 +43,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">חזרה לרשימה</a>
 </div>
 <input id="TotalWidth" type="hidden" name="TotalWidth" class="form-control" readonly />
 <input id="MaxHeight" type="hidden" name="MaxHeight" class="form-control" />
@@ -60,15 +60,15 @@
             newFields.className = 'bookFields';
             newFields.innerHTML = `
                         <div class="form-group">
-                            <label for="Books_${index}__Name" class="control-label">Book Name</label>
+                            <label for="Books_${index}__Name" class="control-label">שם הספר</label>
                                     <input name="Books[${index}].Name" class="form-control" />
                         </div>
                         <div class="form-group">
-                            <label for="Books_${index}__Height" class="control-label">Height</label>
+                            <label for="Books_${index}__Height" class="control-label">גובה</label>
                                             <input type="number" name="Books[${index}].Height" min="1" class="form-control book-height" />
                         </div>
                         <div class="form-group">
-                            <label for="Books_${index}__Width" class="control-label">Width</label>
+                            <label for="Books_${index}__Width" class="control-label">רוחב</label>
                                                     <input type="number" name="Books[${index}].Width" min="1" class="form-control  book-width" />
                         </div>
                     `;

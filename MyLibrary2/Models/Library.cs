@@ -8,7 +8,7 @@ namespace MyLibrary2.Models
 
             [Key]
             public int Id { get; set; }
-            [Display(Name = "Genre")]
+            [Display(Name = "ז'אנר")]
             public string Name { get; set; }
             public ICollection<Shelf> Shelves { get; } = new List<Shelf>();
 

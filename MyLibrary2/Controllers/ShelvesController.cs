@@ -23,7 +23,7 @@ namespace MyLibrary2.Controllers
         public async Task<IActionResult> Index()
         {
             var myLibrary2Context = _context.Shelf.Include(s => s.Library);
-            return View(await myLibrary2Context.ToListAsync());
+            return View(await myLibrary2Context.Include(s => s.Books).ToListAsync());
         }
 
         // GET: Shelves/Details/5
